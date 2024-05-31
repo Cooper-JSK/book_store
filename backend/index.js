@@ -8,10 +8,6 @@ const app = express();
 //middleware for parsing request body 
 app.use(express.json());
 
-app.get('/', (res) => {
-    console.log(req);
-    return res.status(200).send('Welcome to MERN stack');
-});
 
 
 app.post('/books', async (req, res) => {
@@ -78,6 +74,67 @@ app.get('/books/:id', async (req, res) => {
     }
 })
 
+//update a book
+app.put('/books/:id', async (req, res) => {
+    try {
+        //validation
+        if (
+            !req.body.title || !req.body.author || !req.body.publishYear
+        ) {
+            return res.status(400).send({
+                message: "Send all required fields: title, author, publishYear",
+            })
+        }
+
+        const { id } = req.params;
+        const result = await Book.findByIdAndUpdate(id, req.body);
+
+        if (!result) {
+            return res.status(404).send({
+                message: "Book not found",
+            })
+        }
+
+        return res.status(200).send({ message: 'Book updated succesfully' })
+
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: error.message,
+        })
+
+    }
+})
+
+// delete a book
+app.delete('/books/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await Book.findByIdAndDelete(id);
+        if (!result) {
+            return res.status(404).send({
+                message: "Book not found",
+            })
+        }
+        return res.status(200).send({ message: 'Book deleted succesfully' })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            message: error.message,
+        })
+
+    }
+})
+
+
+app.get('/', (req, res) => {
+    console.log(req);
+    return res.status(200).send('Welcome to MERN stack');
+});
+
 const startServer = async () => {
     try {
         await mongoose.connect(mongoDBURL)
@@ -86,6 +143,8 @@ const startServer = async () => {
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
+
+
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
     }
