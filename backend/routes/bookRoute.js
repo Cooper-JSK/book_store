@@ -39,10 +39,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const books = await Book.find({});
-        return res.status(200).json({
-            count: books.length,
-            data: books
-        });
+        return res.status(200).json(books)
 
 
     } catch (error) {
