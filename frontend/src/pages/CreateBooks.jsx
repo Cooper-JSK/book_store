@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton.jsx'
 import Spinner from '../components/Spinner.jsx'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useSnackbar } from 'notistack'
 
 const CreateBooks = () => {
   const [title, setTitle] = useState('');
@@ -10,6 +11,7 @@ const CreateBooks = () => {
   const [publishYear, setPublishYear] = useState('');
   const [loading, setloading] = useState(false);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSaveBook = async () => {
     const data = { title, author, publishYear }
@@ -18,12 +20,14 @@ const CreateBooks = () => {
     try {
       const save = await axios.post('http://localhost:5555/books', data)
       setloading(false);
+      enqueueSnackbar('Book Created Successfully', { variant: 'success' })
       navigate('/')
 
     } catch (error) {
       setloading(false);
       console.log(error);
-      alert('There was an error saving the book. Please try again.');
+
+      enqueueSnackbar('There was an error saving the book. Please try again.', { variant: 'error' })
 
     }
   }
