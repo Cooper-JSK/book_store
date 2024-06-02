@@ -18,7 +18,7 @@ const CreateBooks = () => {
     setloading(true);
 
     try {
-      const save = await axios.post('http://localhost:5555/books', data)
+      const save = await axios.post('https://book-store-ncbo.onrender.com/books', data)
       setloading(false);
       enqueueSnackbar('Book Created Successfully', { variant: 'success' })
       navigate('/')

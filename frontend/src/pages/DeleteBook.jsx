@@ -13,7 +13,7 @@ const DeleteBook = () => {
     try {
       setLoading(true);
       console.log(`Deleting book with ID: ${id}`);  // Log the ID to verify it's correct
-      await axios.delete(`http://localhost:5555/books/${id}`);
+      await axios.delete(`https://book-store-ncbo.onrender.com/books/${id}`);
       setLoading(false);
       navigate('/');
     } catch (error) {
