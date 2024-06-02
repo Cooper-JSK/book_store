@@ -1,3 +1,7 @@
-export const PORT = 5555;
+import dotenv from 'dotenv';
 
-export const mongoDBURL = "mongodb+srv://janitha:Senani@book-store.xtfoyvy.mongodb.net/bookstore?retryWrites=true&w=majority&appName=Book-store"
+// Load environment variables from .env file
+dotenv.config();
+
+export const PORT = process.env.PORT || 3000;
+export const mongoDBURL = process.env.MONGODB_URL || 'mongodb://localhost:27017/myapp';
